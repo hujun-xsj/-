@@ -98,6 +98,7 @@ IMAGE img_muyi;
 IMAGE img_muer;
 IMAGE img_musan;
 IMAGE img_musi;
+IMAGE img_goback;
 void startup_all() // 数据初始化
 {
 	flag = 10;
@@ -115,6 +116,7 @@ void startup_all() // 数据初始化
 	loadimage(&img_renyuan, _T(".\\图片\\renyuan.jpg"));
 	loadimage(&img_caozuo, _T(".\\图片\\caozuo.jpg"));
 	loadimage(&img_shuoming, _T(".\\图片\\shuoming.jpg"));
+	loadimage(&img_goback, _T(".\\图片\\back.jpg"));
 
 	loadimage(&img_muyi, _T(".\\图片\\muyi.jpg"));
 	loadimage(&img_muer, _T(".\\图片\\muer.jpg"));
@@ -345,11 +347,11 @@ void show_second()//第二关初始显示画面
 {
 
 	clearrectangle(0, 0, width, high);
+	BeginBatchDraw();
 	putimage(position_human_x, position_human_y, 50, 50, &img_human1, 0, 50, NOTSRCERASE);
 	putimage(position_human_x, position_human_y, 50, 50, &img_human2, 0, 50, SRCINVERT);
 	putimage(0, 0, 3000, 1000, &img_second, 0, 0);
-
-
+	FlushBatchDraw();
 }
 void lose1()
 {
@@ -1475,6 +1477,7 @@ void updateWithInput_second()
 						position_human_x -= 15;
 						BeginBatchDraw();
 						putimage(0, 0, 1000, 1000, &img_second, bk_x, 0);
+						putimage(0, 0, 75, 75, &img_goback, 0, 0);
 						putimage(position_human_x, position_human_y, 50, 50, &img_human1, 0, 50, NOTSRCERASE);//小人图片
 						putimage(position_human_x, position_human_y, 50, 50, &img_human2, 0, 50, SRCINVERT);//小人图片
 						FlushBatchDraw();
@@ -1570,8 +1573,11 @@ void updateWithInput_first()
 		{
 			if_victory = 1;
 		}
-		if (if_victory == 1)
+		if (if_victory == 1) {
 			victory();
+			stage = 2;
+			break;
+		}
 		loadimage(&img_rocket, _T(".\\图片\\rocket.jpg"));
 		loadimage(&img_rocket2, _T(".\\图片\\rocket2.jpg"));
 		loadimage(&img_rocket3, _T(".\\图片\\rocket3.jpg"));
@@ -2028,7 +2034,7 @@ void updateWithInput_first()
 	}
 }
 int main()
-{
+ {
 	startup_all();  // 数据初始化
 	while (1) //  游戏循环执行
 	{
